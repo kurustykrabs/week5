@@ -4,8 +4,13 @@ let button = document.getElementById ('button');
 let number = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 let passcode = document.querySelector('.passcode');
 let history_board = document.querySelector('.passcode-history');
+let clear_button = document.getElementById('clear-button');
+let delete_record = [];
+let restore_button = document.getElementById('restore-button');
 
 button.addEventListener ('click', generateNumber);
+clear_button.addEventListener ('click', clearAllRecords);
+restore_button.addEventListener ('click', restoreRecords);
 
 console.log(button)
 
@@ -61,8 +66,32 @@ function getRecord(sixDigits) {
 
 }
 
+
 function removeRecord(e) {
   let record = e.currentTarget.parentElement
+  console.log(record)
   history_board.removeChild(record)
+  storeDeletedRecord(record)
+}
 
+function clearAllRecords() {
+  let records = document.querySelectorAll('.passcode-record');
+
+// in order to remove all items in array, need to loop one by one to remove
+  records.forEach( function(record) {
+    history_board.removeChild(record) //remove item
+    storeDeletedRecord(record)
+  });
+
+}
+
+function storeDeletedRecord(record) {
+  delete_record.push(record)
+}
+
+function restoreRecords() {
+  delete_record.forEach( function(record) {
+    history_board.appendChild(record) //create/add item
+  });
+  console.log(restoreRecords)
 }
