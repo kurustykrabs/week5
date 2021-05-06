@@ -1,6 +1,4 @@
-// const button = document.querySelector(".generateBtn");
-
-let button = document.getElementById ('button');
+let button = document.getElementById('button');
 let number = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 let passcode = document.querySelector('.passcode');
 let history_board = document.querySelector('.passcode-history');
@@ -8,11 +6,14 @@ let clear_button = document.getElementById('clear-button');
 let delete_record = [];
 let restore_button = document.getElementById('restore-button');
 
+let timer_display = document.querySelector('.timer-display');
+let timer = 10;
+
 button.addEventListener ('click', generateNumber);
 clear_button.addEventListener ('click', clearAllRecords);
 restore_button.addEventListener ('click', restoreRecords);
 
-console.log(button)
+// console.log(button)
 
 
 function generateNumber() {
@@ -71,6 +72,7 @@ function removeRecord(e) {
   let record = e.currentTarget.parentElement
   console.log(record)
   history_board.removeChild(record)
+  startTimer()
   storeDeletedRecord(record)
 }
 
@@ -82,7 +84,10 @@ function clearAllRecords() {
     history_board.removeChild(record) //remove item
     storeDeletedRecord(record)
   });
-
+  console.log(restore_button)
+  restore_button.style.display = 'inline';
+  startTimer()
+  timer = 10
 }
 
 function storeDeletedRecord(record) {
@@ -93,5 +98,30 @@ function restoreRecords() {
   delete_record.forEach( function(record) {
     history_board.appendChild(record) //create/add item
   });
+  timer_display.style.display = 'inline';
+
+  delete_record = []
+  timer = 0;
   console.log(restoreRecords)
+}
+
+function startTimer() {
+  restore_button.style.display = 'inline';
+  timer_display.style.display = 'inline';
+
+  let runTimer = setInterval(function () {
+    if (timer > 0) {
+      timer -= 1;
+
+      timer_display.innerHTML = `${timer} seconds to restore your previous records`
+    } else {
+      clearInterval(runTimer)
+      // restore_button.classList.add('display-none');
+      restore_button.style.display = 'none';
+      timer_display.style.display = 'none';
+      timer = 10;
+      delete_record = []
+    }
+  }, 1000);
+
 }
